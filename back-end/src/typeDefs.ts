@@ -43,7 +43,8 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(username: String, password: String): Session
+    createUser(username: String!, password: String!): Session
+    login(username: String!, password: String!): Session
   }
 
   schema {

@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string,
@@ -49,12 +50,19 @@ export type Movie = {
 export type Mutation = {
    __typename?: 'Mutation',
   createUser?: Maybe<Session>,
+  login?: Maybe<Session>,
 };
 
 
 export type MutationCreateUserArgs = {
-  username?: Maybe<Scalars['String']>,
-  password?: Maybe<Scalars['String']>
+  username: Scalars['String'],
+  password: Scalars['String']
+};
+
+
+export type MutationLoginArgs = {
+  username: Scalars['String'],
+  password: Scalars['String']
 };
 
 export type Query = {
@@ -211,7 +219,8 @@ export type MovieResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createUser?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, MutationCreateUserArgs>,
+  createUser?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'username' | 'password'>>,
+  login?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'username' | 'password'>>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
