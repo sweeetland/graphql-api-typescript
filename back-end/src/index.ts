@@ -14,7 +14,7 @@ const server = new ApolloServer({
       return {
         me: getMe(req),
         secret: 'somethingsupersecret', // <-- obviously wouldn't ever harcode this in real life
-        data
+        data // <-- workaround so I don't have to mess with a db :)
       }
   }
 })

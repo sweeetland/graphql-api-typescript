@@ -43,6 +43,7 @@ export type Movie = {
   title: Scalars['String'],
   year?: Maybe<Scalars['String']>,
   rating?: Maybe<Scalars['Float']>,
+  scoutbase_rating?: Maybe<Scalars['String']>,
   actors?: Maybe<Array<Maybe<Actor>>>,
   directors?: Maybe<Array<Maybe<Director>>>,
 };
@@ -214,6 +215,7 @@ export type MovieResolvers<ContextType = any, ParentType extends ResolversParent
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   year?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   rating?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  scoutbase_rating?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   actors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Actor']>>>, ParentType, ContextType>,
   directors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Director']>>>, ParentType, ContextType>,
 };

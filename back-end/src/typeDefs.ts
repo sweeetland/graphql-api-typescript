@@ -29,6 +29,7 @@ export const typeDefs = gql`
     title: String!
     year: String
     rating: Float
+    scoutbase_rating: String
     actors: [Actor]
     directors: [Director]
   }

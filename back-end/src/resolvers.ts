@@ -1,5 +1,9 @@
 import * as bcrypt from 'bcryptjs'
-import { AuthenticationError, UserInputError } from 'apollo-server-express'
+import {
+  AuthenticationError,
+  UserInputError,
+  ForbiddenError
+} from 'apollo-server-express'
 
 import { Resolvers } from './generated/graphql'
 import { createToken, idProvider } from './helpers'
@@ -34,25 +38,30 @@ export const resolvers: Resolvers = {
   },
 
   Movie: {
-    actors: (movie, {}, { data }) =>
+    actors: (movie, args, { data }) =>
       movie.actors.map(actorId => data.actors.find(({ id }) => id === actorId)),
 
-    directors: (movie, {}, { data }) =>
+    directors: (movie, args, { data }) =>
       movie.directors.map(directorId =>
         data.directors.find(({ id }) => id === directorId)
-      )
+      ),
+
+    scoutbase_rating: (movie, args, { me }) => {
+      if (!me) throw new ForbiddenError('You must be logged in to view this.')
+      return (Math.floor(Math.random() * 41 + 50) / 10).toString()
+    }
   },
 
   Actor: {
-    directors: (actor, {}, { data }) =>
+    directors: (actor, args, { data }) =>
       data.directors.filter(director => actor.directors.includes(director.id)),
 
-    movies: (actor, {}, { data }) =>
+    movies: (actor, args, { data }) =>
       data.movies.filter(({ actorIDs }) => actorIDs.includes(actor.id))
   },
 
   Director: {
-    moviesDirected: (director, {}, { data }) =>
+    moviesDirected: (director, args, { data }) =>
       data.movies.filter(({ directorIDs }) => directorIDs.includes(director.id))
   }
 }
