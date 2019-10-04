@@ -20,7 +20,7 @@ const server = new ApolloServer({
 })
 
 const app = express()
-server.applyMiddleware({ app })
+server.applyMiddleware({ app, cors: { origin: '*', credentials: true } })
 
 const port = process.env.PORT || 4000
 app.listen({ port }, () =>
