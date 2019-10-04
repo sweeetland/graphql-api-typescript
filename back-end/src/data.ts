@@ -1,3 +1,5 @@
+const users = []
+
 const actors = [
   {
     id: 1,
@@ -54,4 +56,4 @@ const movies = [
   }
 ]
 
-export const data = { actors, directors, movies }
+export const data = { users, actors, directors, movies }

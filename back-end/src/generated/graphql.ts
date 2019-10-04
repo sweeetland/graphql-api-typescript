@@ -42,9 +42,19 @@ export type Movie = {
   title: Scalars['String'],
   year?: Maybe<Scalars['String']>,
   rating?: Maybe<Scalars['Float']>,
-  scoutbase_rating?: Maybe<Scalars['String']>,
   actors?: Maybe<Array<Maybe<Actor>>>,
   directors?: Maybe<Array<Maybe<Director>>>,
+};
+
+export type Mutation = {
+   __typename?: 'Mutation',
+  createUser?: Maybe<Session>,
+};
+
+
+export type MutationCreateUserArgs = {
+  username?: Maybe<Scalars['String']>,
+  password?: Maybe<Scalars['String']>
 };
 
 export type Query = {
@@ -52,6 +62,19 @@ export type Query = {
   movies?: Maybe<Array<Maybe<Movie>>>,
 };
 
+export type Session = {
+   __typename?: 'Session',
+  token: Scalars['String'],
+  user: User,
+};
+
+
+export type User = {
+   __typename?: 'User',
+  id: Scalars['ID'],
+  name?: Maybe<Scalars['String']>,
+  username: Scalars['String'],
+};
 
 
 
@@ -131,6 +154,9 @@ export type ResolversTypes = {
   Float: ResolverTypeWrapper<Scalars['Float']>,
   Actor: ResolverTypeWrapper<Actor>,
   Director: ResolverTypeWrapper<Director>,
+  Mutation: ResolverTypeWrapper<{}>,
+  Session: ResolverTypeWrapper<Session>,
+  User: ResolverTypeWrapper<User>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   CacheControlScope: CacheControlScope,
   Upload: ResolverTypeWrapper<Scalars['Upload']>,
@@ -146,6 +172,9 @@ export type ResolversParentTypes = {
   Float: Scalars['Float'],
   Actor: Actor,
   Director: Director,
+  Mutation: {},
+  Session: Session,
+  User: User,
   Boolean: Scalars['Boolean'],
   CacheControlScope: CacheControlScope,
   Upload: Scalars['Upload'],
@@ -177,25 +206,42 @@ export type MovieResolvers<ContextType = any, ParentType extends ResolversParent
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   year?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   rating?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
-  scoutbase_rating?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   actors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Actor']>>>, ParentType, ContextType>,
   directors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Director']>>>, ParentType, ContextType>,
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createUser?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, MutationCreateUserArgs>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   movies?: Resolver<Maybe<Array<Maybe<ResolversTypes['Movie']>>>, ParentType, ContextType>,
 };
 
+export type SessionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Session'] = ResolversParentTypes['Session']> = {
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
+};
+
 export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
   name: 'Upload'
 }
+
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
 
 export type Resolvers<ContextType = any> = {
   Actor?: ActorResolvers<ContextType>,
   Director?: DirectorResolvers<ContextType>,
   Movie?: MovieResolvers<ContextType>,
+  Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
+  Session?: SessionResolvers<ContextType>,
   Upload?: GraphQLScalarType,
+  User?: UserResolvers<ContextType>,
 };
 
 

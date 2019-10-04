@@ -1,8 +1,25 @@
+import * as bcrypt from 'bcryptjs'
+
 import { Resolvers } from './generated/graphql'
+import { createToken, idProvider } from './helpers'
 
 export const resolvers: Resolvers = {
   Query: {
     movies: ({}, {}, { data }) => data.movies
+  },
+
+  Mutation: {
+    createUser: async (parent, { username, password }, ctx) => {
+      const user = {
+        id: `${idProvider()}`,
+        username,
+        password: await bcrypt.hash(password, 10)
+      }
+
+      ctx.data.users.push(user)
+
+      return { user, token: createToken(user, ctx.secret, '30m') }
+    }
   },
 
   Movie: {
